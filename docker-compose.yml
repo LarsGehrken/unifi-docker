@@ -2,7 +2,6 @@ version: '2.3'
 services:
   mongo:
     image: mongo:3.6
-    container_name: ${COMPOSE_PROJECT_NAME}_mongo
     networks:
       - unifi
     restart: always
@@ -11,7 +10,6 @@ services:
       - dbcfg:/data/configdb
   controller:
     image: "jacobalberty/unifi:${TAG:-latest}"
-    container_name: ${COMPOSE_PROJECT_NAME}_controller
     depends_on:
       - mongo
     init: true
@@ -44,7 +42,6 @@ services:
       - "10001:10001/udp" # AP discovery
   logs:
     image: bash
-    container_name: ${COMPOSE_PROJECT_NAME}_logs
     depends_on:
       - controller
     command: bash -c 'tail -F /unifi/log/*.log'
